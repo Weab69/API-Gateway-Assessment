@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: ./Assesment
+      dockerfile: Dockerfile
+    container_name: express-gateway
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Assesment:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - PORT=8000
+      - MONGO_URI=mongodb+srv://yeabsira:K9Zayy9E8dspcm6j@cluster0.2swd6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - JWT_SECRET=a-super-secret-key-that-should-be-changed
+      - JWT_REFRESH_SECRET=another-super-secret-key-that-should-be-changed
+      - ACCESS_TOKEN_EXPIRATION=15m
+      - REFRESH_TOKEN_EXPIRATION=7d
+      - PORT=8000
+      - RABBITMQ_URL=amqps://svpkllma:rLNbRH3y_6Js59VqQryY9IEzPwOtjc6m@possum.lmq.cloudamqp.com/svpkllma
+    restart: unless-stopped
+
+  reviews_service:
+    build:
+      context: ./reviews
+      dockerfile: Dockerfile
+      args:
+        - DATABASE_URL=${DATABASE_URL}
+    container_name: nestjs-reviews-service
+    volumes:
+      - ./reviews:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - RMQ_URL=amqps://svpkllma:rLNbRH3y_6Js59VqQryY9IEzPwOtjc6m@possum.lmq.cloudamqp.com/svpkllma
+      - DATABASE_URL=postgresql://neondb_owner:npg_IG8yB7DkMazt@ep-blue-waterfall-aemmk5bx-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+    restart: unless-stopped

@@ -1,0 +1,42 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id String @id
+
+  reviews Review[]
+
+  @@map("users")
+}
+
+model Book {
+  id String @id
+
+  reviews Review[]
+
+  @@map("books")
+}
+
+model Review {
+  id      String @id @default(uuid())
+  rating  Float
+  comment String
+
+  userId String @default("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+  bookId String @default("book_id")
+  book   Book   @relation(fields: [bookId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([bookId])
+  @@map("reviews")
+}
