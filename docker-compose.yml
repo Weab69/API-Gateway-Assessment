@@ -13,13 +13,13 @@ services:
       - /usr/src/app/node_modules
     environment:
       - PORT=8000
-      - MONGO_URI=mongodb+srv://yeabsira:K9Zayy9E8dspcm6j@cluster0.2swd6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - MONGO_URI=your mongo db url
       - JWT_SECRET=a-super-secret-key-that-should-be-changed
       - JWT_REFRESH_SECRET=another-super-secret-key-that-should-be-changed
       - ACCESS_TOKEN_EXPIRATION=15m
       - REFRESH_TOKEN_EXPIRATION=7d
       - PORT=8000
-      - RABBITMQ_URL=amqps://svpkllma:rLNbRH3y_6Js59VqQryY9IEzPwOtjc6m@possum.lmq.cloudamqp.com/svpkllma
+      - RABBITMQ_URL=your rabitmq url
     restart: unless-stopped
 
   reviews_service:
@@ -33,6 +33,6 @@ services:
       - ./reviews:/usr/src/app
       - /usr/src/app/node_modules
     environment:
-      - RMQ_URL=amqps://svpkllma:rLNbRH3y_6Js59VqQryY9IEzPwOtjc6m@possum.lmq.cloudamqp.com/svpkllma
-      - DATABASE_URL=postgresql://neondb_owner:npg_IG8yB7DkMazt@ep-blue-waterfall-aemmk5bx-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+      - RMQ_URL=yur rabbitmq url
+      - DATABASE_URL=your postgresql db url
     restart: unless-stopped
